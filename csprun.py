@@ -1,13 +1,3 @@
-############################################################
-## CSC 384, Intro to AI, University of Toronto.
-## Assignment 3 Starter Code
-## v1.1
-## Changes:
-##  - changed the command line arguments so that not providing the heuristic 
-##    flag means not using the MRV heuristic, and providing the flag means 
-##    using the heuristic.
-############################################################
-
 import argparse
 
 from board import *

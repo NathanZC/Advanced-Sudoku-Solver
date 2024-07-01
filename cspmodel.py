@@ -1,13 +1,4 @@
-############################################################
-## CSC 384, Intro to AI, University of Toronto.
-## Assignment 3 Starter Code
-## v1.1
-## Changes:
-##   v1.1: updated the comments in kropki_model.
-##         the second return value should be a 2d list of variables.
-############################################################
 import math
-
 from board import *
 from cspbase import *
 

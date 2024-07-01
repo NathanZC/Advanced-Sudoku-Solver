@@ -1,5 +1,3 @@
-
-
 def prop_FC(csp, last_assigned_var=None):
     """
     This is a propagator to perform forward checking. 
@@ -162,11 +160,6 @@ def ord_mrv(csp):
 
     # In case no variable is found (which shouldn't happen), return None
     return None
-
-
-###############################################################################
-# Do not modify the prop_BT function below
-###############################################################################
 
 
 def prop_BT(csp, last_assigned_var=None):

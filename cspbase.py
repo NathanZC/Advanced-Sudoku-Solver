@@ -1,10 +1,3 @@
-############################################################
-## CSC 384, Intro to AI, University of Toronto.
-## Assignment 3 Starter Code
-## v1.0
-##
-############################################################
-
 import time
 
 class Variable: 
