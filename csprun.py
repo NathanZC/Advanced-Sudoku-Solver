@@ -4,50 +4,74 @@ from board import *
 from cspmodel import *
 from propagators import *
 
+
 def read_from_file(filename):
     """
-    Create and return a board using the input file
+    Create and return a board using the input file.
     """
+    try:
+        with open(filename, 'r') as inputfile:
+            lines = inputfile.readlines()
 
-    inputfile = open(filename, 'r')
-    lines = inputfile.readlines()
-    inputfile.close()
-    
-    # get the dimension
-    dimension = int(lines[0].strip())
+        # Get the dimension
+        dimension = int(lines[0].strip())
+        print(f"Dimension: {dimension}")
+        board = Board(dimension)
 
-    board = Board(dimension)
+        # Populate the initial values
+        for row in range(dimension):
+            line_index = row * 2 + 2
+            if line_index >= len(lines):
+                raise IndexError(f"Expected line {line_index} for row {row} not found.")
 
-    # populate the initial values
-    for row in range(dimension):
-        line = lines[row * 2 + 2].strip()
+            line = lines[line_index].strip()
+            print(f"Row {row}: {line}")
 
-        for col in range(dimension):
-            col_actual = col * 2 + 1
-            if line[col_actual] != CHAR_EMPTY:
-                board.cells[row][col] = int(line[col_actual])
+            for col in range(dimension):
+                col_actual = col * 2 + 1
+                if col_actual >= len(line):
+                    raise IndexError(f"Expected column {col_actual} for row {row} not found in line: {line}")
 
-    # add the dot constraints between two cells in the same row (location is True)
-    for row in range(dimension):
-        line = lines[row * 2 + 2].strip()
+                if line[col_actual] != CHAR_EMPTY:
+                    board.cells[row][col] = int(line[col_actual])
 
-        for col in range(dimension - 1):
-            col_actual = col * 2 + 2
-            if line[col_actual] == CHAR_BLACK or line[col_actual] == CHAR_WHITE:
-                dot = Dot(line[col_actual], row, col, True)
-                board.dots.append(dot)
+        # Add the dot constraints between two cells in the same row (location is True)
+        for row in range(dimension):
+            line_index = row * 2 + 2
+            line = lines[line_index].strip()
 
-    # adding the dot constraints between two cells in the same column (location is False)
-    for row in range(dimension - 1):
-        line = lines[row * 2 + 3].strip()
+            for col in range(dimension - 1):
+                col_actual = col * 2 + 2
+                if col_actual >= len(line):
+                    raise IndexError(f"Expected dot column {col_actual} for row {row} not found in line: {line}")
 
-        for col in range(dimension):
-            col_actual = col * 2 + 1
-            if line[col_actual] == CHAR_BLACK or line[col_actual] == CHAR_WHITE:
-                dot = Dot(line[col_actual], row, col, False)
-                board.dots.append(dot)
+                if line[col_actual] in [CHAR_BLACK, CHAR_WHITE]:
+                    dot = Dot(line[col_actual], row, col, True)
+                    board.dots.append(dot)
 
-    return board
+        # Adding the dot constraints between two cells in the same column (location is False)
+        for row in range(dimension - 1):
+            line_index = row * 2 + 3
+            if line_index >= len(lines):
+                raise IndexError(f"Expected line {line_index} for row {row} not found.")
+
+            line = lines[line_index].strip()
+
+            for col in range(dimension):
+                col_actual = col * 2 + 1
+                if col_actual >= len(line):
+                    raise IndexError(f"Expected dot column {col_actual} for row {row} not found in line: {line}")
+
+                if line[col_actual] in [CHAR_BLACK, CHAR_WHITE]:
+                    dot = Dot(line[col_actual], row, col, False)
+                    board.dots.append(dot)
+
+        return board
+
+    except Exception as e:
+        print(f"Error while reading the file: {e}")
+        return None
+
 
 
 if __name__ == "__main__":
